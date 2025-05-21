@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://recommender.barchinet.com:8080/',
+  baseURL: '/api',
 });
 
 export default api;
