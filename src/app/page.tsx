@@ -7,25 +7,15 @@ import api from "@/lib/api";
 import Link from "next/link";
 import { useRef, useState, useEffect } from "react";
 
-interface Product {
-  product_id: number;
-  name: string;
-  category: string;
-  price: number;
-  rating: number;
-}
-
 const PAGE_SIZE = 12;
 const ITEM_HEIGHT = 180;
 
 export default function HomePage() {
-  const listRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState<number | null>(null);
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
 
   useEffect(() => {
-    console.log(containerRef);
     if (containerRef.current) {
       const { clientHeight, clientWidth } = containerRef.current;
       setContainerHeight(clientHeight);
@@ -125,7 +115,6 @@ export default function HomePage() {
                 itemCount={allProducts.length}
                 itemSize={ITEM_HEIGHT}
                 onScroll={handleScroll}
-                ref={listRef}
               >
                 {Row}
               </List>

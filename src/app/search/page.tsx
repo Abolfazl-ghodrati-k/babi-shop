@@ -9,13 +9,6 @@ import SearchBox from "./components/SearchBox";
 import CategorySelect from "./components/CategorySelect";
 import PriceFilter from "./components/PriceFilter";
 
-interface Product {
-  product_id: number;
-  name: string;
-  category: string;
-  price: number;
-  rating: number;
-}
 
 const PAGE_SIZE = 12;
 const ITEM_HEIGHT = 180;
@@ -27,7 +20,6 @@ const SearchPage = () => {
   const [maxPrice, setMaxPrice] = useState(Infinity);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<any>(null);
   const [containerHeight, setContainerHeight] = useState<number | null>(null);
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
 
@@ -144,7 +136,6 @@ const SearchPage = () => {
                 itemCount={allProducts.length}
                 itemSize={ITEM_HEIGHT}
                 onScroll={handleScroll}
-                ref={listRef}
               >
                 {Row}
               </List>
