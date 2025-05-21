@@ -28,8 +28,8 @@ const SearchPage = () => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<any>(null);
-  const [containerHeight, setContainerHeight] = useState(600);
-  const [containerWidth, setContainerWidth] = useState(800);
+  const [containerHeight, setContainerHeight] = useState<number | null>(null);
+  const [containerWidth, setContainerWidth] = useState<number | null>(null);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -62,7 +62,7 @@ const SearchPage = () => {
       return res.data;
     },
     getNextPageParam: (lastPage, allPages) => {
-      const total = lastPage.results.length + (lastPage.total || 0);
+      const total = lastPage.total;
       const loaded = allPages.flatMap((p) => p.results).length;
       return loaded < total ? allPages.length + 1 : undefined;
     },
@@ -76,16 +76,19 @@ const SearchPage = () => {
     scrollOffset,
     scrollDirection,
   }: ListOnScrollProps) => {
+    if (!containerHeight) return;
     const visibleRows = Math.ceil(containerHeight / ITEM_HEIGHT);
+    console.log(hasNextPage);
     if (
       hasNextPage &&
       scrollDirection === "forward" &&
       scrollOffset / ITEM_HEIGHT + visibleRows >= allProducts.length - 1 &&
-      isFetchingNextPage
+      !isFetchingNextPage
     ) {
       fetchNextPage();
     }
   };
+
 
   const Row = ({
     index,
@@ -113,6 +116,8 @@ const SearchPage = () => {
     );
   };
 
+  const showList = containerHeight && containerWidth;
+
   return (
     <main className="p-6 max-w-5xl mx-auto h-full flex flex-col max-h-screen">
       <div className="mb-6 flex items-center justify-between gap-4">
@@ -126,21 +131,25 @@ const SearchPage = () => {
         />
       </div>
       <div className="flex-1 max-h-full overflow-hidden" ref={containerRef}>
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : isError ? (
-          <p>Error loading products.</p>
-        ) : (
-          <List
-            height={containerHeight}
-            width={containerWidth}
-            itemCount={allProducts.length}
-            itemSize={ITEM_HEIGHT}
-            onScroll={handleScroll}
-            ref={listRef}
-          >
-            {Row}
-          </List>
+        {showList && (
+          <div>
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : isError ? (
+              <p>Error loading products.</p>
+            ) : (
+              <List
+                height={containerHeight}
+                width={containerWidth}
+                itemCount={allProducts.length}
+                itemSize={ITEM_HEIGHT}
+                onScroll={handleScroll}
+                ref={listRef}
+              >
+                {Row}
+              </List>
+            )}
+          </div>
         )}
       </div>
     </main>

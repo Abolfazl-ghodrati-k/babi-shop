@@ -28,7 +28,6 @@ export default function HomePage() {
     console.log(containerRef);
     if (containerRef.current) {
       const { clientHeight, clientWidth } = containerRef.current;
-      console.log({ clientHeight, clientWidth });
       setContainerHeight(clientHeight);
       setContainerWidth(clientWidth);
     }
